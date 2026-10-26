@@ -171,3 +171,34 @@ text = BeautifulSoup(html, "html.parser").get_text()
 - 不用 3D 圖，直接標註數值。
 - 強調重點用強調色，其他用灰色。
 - 依用途選擇正確圖表類型（比較→長條、趨勢→折線、佔比→圓餅、關係→散點）。
+
+## 省 token 簡報指令
+
+製作或修改簡報時，依情況套用以下其中一組指令，以最少 token 完成任務。
+
+### pptx 版（用 python-pptx 新建或修改 .pptx）
+
+- 工具腳本放在 `./tools/`，寫一次之後重複使用：
+  - `pptx_dump.py <file> [slides...]`：每個非空 shape 輸出一行（shape_id、type、name、前 40 字）
+  - `pptx_preview.py <file> [slides...]`：用 LibreOffice headless 轉 PDF，只渲染指定頁，拼成單張 480px 格狀縮圖存到 `./tmp/preview.png`
+- **新建模式**（檔案不存在）：寫一支 build script，用小 helper（title/bullets/chart/table/image），跑一次完成。預設：16:9、主色＋強調色、白或淺灰背景、微軟正黑體、標題 32–40pt、內文 18–24pt、每頁最多 6 條列。
+- **修改模式**（檔案已存在）：只 dump 要改的頁，對應 shape_id，寫一支腳本套用所有修改，存成 `{name}_edited.pptx`，絕不覆蓋原檔。
+- **視覺檢查**：只做一次，只渲染改過的頁，發現問題只修正一次，不再重複預覽。
+- **禁止**：不解壓縮、不讀 XML、不在對話中印出投影片內容、不貼出腳本。
+- 沒有提供的文字一律標 `【待補】`，不自行編造。
+- 輸出格式（繁體中文）：1. 檔案路徑 2. 模式 3. 已修改或建立的頁面 4. 自行判斷的地方（若有）5. 失敗項目（若有）
+
+### Canva 版（透過 Canva MCP 修改現有 Canva 簡報）
+
+- **只能修改現有設計，絕不建立新設計。**
+- 若找不到可修改的設計，停止並告知使用者。
+- 流程：
+  1. 解析設計（從 DESIGN_LINK 或 search-designs 取得）
+  2. 新圖片先 upload-asset-from-url 取得 id
+  3. 只 read-design 一次，只讀要改的頁面，不帶縮圖
+  4. 每頁只呼叫一次 edit-design，套用該頁所有操作，finalize: "keep_open"
+  5. 視覺檢查：直接用 edit-design 回傳的縮圖，不重新取圖；只修正一次
+  6. 確認無誤後，edit-design with finalize: "commit" 存檔
+- **禁止**：重複讀取同一資料、讀取未修改頁面的縮圖、在對話中解說步驟。
+- 沒有提供的文字一律標 `【待補】`，不自行編造。
+- 輸出格式（繁體中文）：1. 設計標題＋連結 2. 已修改的頁面 3. 自行判斷的地方（若有）4. 失敗項目（若有）
