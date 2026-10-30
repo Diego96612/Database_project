@@ -129,6 +129,17 @@ node app.js
 
 ---
 
+## 簡報輔助工具（`tools/`）
+
+與拉霸機專案無關，是修改 .pptx 時用來節省 token 的小工具，需要 `python-pptx` 與 `Pillow`（用 `uv pip install` 安裝）。
+
+| 檔案 | 用途 |
+|---|---|
+| `tools/pptx_dump.py <file> [頁碼...]` | 每個非空 shape 輸出一行，表格逐格輸出，只列指定頁 |
+| `tools/pptx_preview.py <file> <輸出png> <頁碼...>` | 用 LibreOffice 轉 PDF，只渲染指定頁並拼成單張縮圖 |
+
+---
+
 ## 授權
 
 本專案為學術用途，僅供學習與展示使用。
