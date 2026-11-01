@@ -140,6 +140,12 @@ node app.js
 
 ---
 
+## 使用者層級 CLAUDE.md
+
+`user-level-CLAUDE.md` 是不含專案專屬內容的通用規範（環境、工具鏈、回答偏好、簡報規範、省 token 簡報指令）。複製到 `C:\Users\<使用者名稱>\.claude\CLAUDE.md` 後，在任何資料夾開啟 Claude Code 都會套用。
+
+---
+
 ## 授權
 
 本專案為學術用途，僅供學習與展示使用。
